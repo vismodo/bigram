@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bigram By @vismodo</title>
+    <style>
+        * {
+            font-family: 'Courier New', Courier, monospace;
+            color:white;
+        }
+        body {
+            margin:60px 30% 0 30%;
+            font-family: 'Courier New', Courier, monospace;
+            color:white;
+            background-color:rgb(16, 16, 16);
+        }
+        input{
+            font-size:16px;
+            border:1px solid #ccc;
+            background-color: rgb(16, 16, 16);
+            color:white;
+            outline: none;
+        }
+        input[type="text"]{
+            padding: 5px;
+            padding-left:10px;
+            margin-bottom:10px;
+            width:calc(100% - 16px);
+            height:30px;
+        }
+        input[type="number"]{
+            padding:5px;
+            width:50px;
+            margin-left:10px;
+        }
+        span {
+            font-size:20px;
+        }
+        .output {
+            font-size:20px;
+            border: 1px solid #ccc;
+            background-color: rgb(16, 16, 16);
+            height:250px;
+            overflow-y:scroll;
+            padding:10px;
+        }
+        button {
+            width:100%;
+            padding:10px;
+            font-size:22px;
+            background-color: rgb(34, 34, 34);
+            cursor:pointer;
+        }
+        ::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+            width: 10px;
+            height: 10px;
+          }
+      
+          /* Set the height and width of the scrollbar thumb */
+          ::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 10px;
+            width: 10px;
+            height: 10px;
+          }
+          @media (max-width:700px){
+            body {
+                margin-left:20px;
+                margin-right:20px
+            }
+          }
+    </style>
+</head>
+<body><div class="container">
+    <h1><center>Pre-Trained Bigram</center></h1>
+    <input type="text" placeholder="Prompt (2 words)" id="prompt"><br>
+    <center><span>Randomness</span><input type="number" max="5" min="1" value="2" id="temp" style="margin-right:30px"><span>Tokens to generate</span><input type="number" value="100" min="1" id="tokens">
+    <br><br><button id="generate">Generate</button>
+    </center>
+    <br><br><div class="output" id="output"></div>
+    <script src="data.js"></script>
+    <script>
+        const genBtn = document.getElementById('generate');
+        const outBox = document.getElementById('output');
+        const promptBox = document.getElementById('prompt')
+        window.onload = ()=>{
+        genBtn.addEventListener('click',()=>{
+            const temp = document.getElementById('temp').value
+            prompt_val = promptBox.value.toLowerCase();
+            outBox.innerText = prompt_val
+            prompt_split = prompt_val.split(' ')
+            if(prompt_split.length < 2){
+                alert('Prompt must be atleast 2 words');
+                return;
+            }else{
+                let sentence=prompt_split.slice(prompt_split.length-2,prompt_split.length).join(' ')
+                if (prompts.includes(sentence)){
+                    for (let i=0;i<Math.max(document.getElementById('tokens').value,1);i++){
+                        const randomIndex = Math.floor(Math.random() * Math.min(preds[prompts.indexOf(sentence)].length, temp));
+                        const word = preds[prompts.indexOf(sentence)][randomIndex]
+                        console.log(word)
+                        outBox.innerText = outBox.innerText+' '+word;
+                        sentence = sentence + ' ' + word
+                        sentence = sentence.split(' ')
+                        sentence = sentence.slice(sentence.length-2,sentence.length).join(' ')
+                    }
+                } else {
+                    alert('Prompt not found in database')
+                }
+                
+            }
+        })}
+    </script>
+<footer><br><br><center>Created by <a href="https://twitter.com/vizmodo" target="_blank">@vizmodo</a><br>
+Trained on 1,000,000 tokens of <a href="https://www.kaggle.com/datasets/edenbd/children-stories-text-corpus"  target="_blank">Children Stories Text Corpus </a>
+<br><br><a href="https://github.com/vismodo/bigram" target="_blank">GitHub</a>
+</center></footer></div>
+</body>
+</html>
