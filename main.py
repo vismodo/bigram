@@ -1,5 +1,5 @@
-prompts = eval(open('prompts.txt',encoding='utf-8').read().lower())
-preds = eval(open('preds.txt',encoding='utf-8').read().lower())
+prompts = eval(open('prompts2.txt',encoding='utf-8').read().lower())
+preds = eval(open('preds2.txt',encoding='utf-8').read().lower())
 from random import choice
 while True:
     prompt = input('\n Enter 2 Words: ')
