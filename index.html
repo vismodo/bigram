@@ -42,7 +42,7 @@
             font-size:20px;
             border: 1px solid #ccc;
             background-color: rgb(16, 16, 16);
-            height:250px;
+            height:210px;
             overflow-y:scroll;
             padding:10px;
         }
@@ -79,13 +79,20 @@
     <input type="text" placeholder="Prompt (2 words)" id="prompt"><br>
     <center><span>Randomness</span><input type="number" max="5" min="1" value="2" id="temp" style="margin-right:30px"><span>Tokens to generate</span><input type="number" value="100" min="1" id="tokens">
     <br><br><button id="generate">Generate</button>
+        <br><button id="share">Share</button>
     </center>
     <br><br><div class="output" id="output"></div>
     <script src="data.js"></script>
     <script>
         const genBtn = document.getElementById('generate');
         const outBox = document.getElementById('output');
+        const shareBtn = document.getElementById('share');
         const promptBox = document.getElementById('prompt')
+        shareBtn.addEventListener('click',()=>{
+            const msg = "I created this with @vizmodo's AI language model!\n\nPrompt:\n"+promptBox.value+'\n\n Output:\n'+outBox.value+'\n\n Try it out for yourself at https://bigram.vismaya.org/'
+            navigator.clipboard.writeText(msg)
+            alert('Copied to clipboard!')
+        })
         window.onload = ()=>{
         genBtn.addEventListener('click',()=>{
             const temp = document.getElementById('temp').value
