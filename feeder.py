@@ -1,18 +1,20 @@
 import re
-corpus_file = open('corpus2.txt',encoding='utf-8')
+corpus_file = open('corpus.txt',encoding='utf-8')
 corpus_fl = corpus_file.read()
 corpus_file.close()
-
+#set number of grams
 grams = 2
+#format corpus
 corpus = re.sub(r'\n(.*?):', '', corpus_fl)
-corpus = corpus.replace('\n',' ').replace('.',' . ').replace('?',' ? ').replace('!',' ! ').replace(',',' , ')
-corpus = re.sub(r'\s+', ' ', corpus)
+corpus = corpus.replace('\n',' ').replace('.',' . ').replace('?',' ? ').replace('!',' ! ').replace(',',' , ').replace('"',' " ')
+corpus = re.sub(r'\s+', ' ', corpus).lower()
 corpus = corpus.split(' ')[0:1000000]
 corpus_fl = ' '.join(corpus)
+#Get unique tokens
 words = set(corpus)
-prompts = []
-preds = []
 
+prompts = set()
+preds = []
 # precompute n-gram counts
 ngram_counts = {}
 for i in range(len(corpus)-grams):
@@ -23,26 +25,23 @@ for i in range(len(corpus)-grams):
     if word not in ngram_counts[prompt]:
         ngram_counts[prompt][word] = 0
     ngram_counts[prompt][word] += 1
-
-for x in range(len(corpus)-grams):
+corp_len = len(corpus)
+for x in range(corp_len-grams):
+    #set prompt to last 2 tokens
     prompt = ' '.join(corpus[x:x+grams])
     if x%1000 ==0:
-        print(x*100/len(corpus))
-    if prompt not in prompts:
-        prompts.append(prompt)
-        best_word = []
-        prob = 0
-        if prompt in ngram_counts:
-            for word, count in ngram_counts[prompt].items():
-                if count > prob:
-                    best_word.append(word)
-                    prob=count
-        preds.append(list(reversed(best_word)))
-
-prompt_fl = open('prompts2.txt', 'w',encoding="utf-8")
-prompt_fl.write(str(prompts))
+        print(x*100/corp_len)
+    prompts.add(prompt)
+    words = ngram_counts[prompt].keys()
+    counts = ngram_counts[prompt].values()
+    arranged = sorted(zip(counts, words), reverse=True)
+    a = list(dict(arranged).values())
+    preds.append(a[0:min(10,len(a))])
+#save prompts
+prompt_fl = open('prompts.txt', 'w',encoding="utf-8")
+prompt_fl.write(str(list(prompts)))
 prompt_fl.close()
-
-preds_fil = open('preds2.txt', 'w',encoding="utf-8")
+#save predictins
+preds_fil = open('preds.txt', 'w',encoding="utf-8")
 preds_fil.write(str(preds))
 preds_fil.close()
