@@ -89,7 +89,7 @@
         const shareBtn = document.getElementById('share');
         const promptBox = document.getElementById('prompt')
         shareBtn.addEventListener('click',()=>{
-            const msg = "I created this with @vizmodo's AI language model!\n\nPrompt:\n"+promptBox.value+'\n\n Output:\n'+outBox.innerText+'\n\n Try it out for yourself at https://bigram.vismaya.org/'
+            const msg = "I created this with @vizmodo's AI language model!\n\nPrompt:\n"+promptBox.value+'\n\nOutput:\n'+outBox.innerText+'\n\nTry it out for yourself at https://bigram.vismaya.org/'
             navigator.clipboard.writeText(msg)
             alert('Copied to clipboard!')
         })
