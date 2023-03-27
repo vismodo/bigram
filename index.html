@@ -78,10 +78,10 @@
     <h1><center>AI Language Model - Bigram</center></h1>
     <input type="text" placeholder="Prompt (2 words)" id="prompt"><br>
     <center><span>Randomness</span><input type="number" max="10" min="1" value="3" id="temp" style="margin-right:30px"><span>Tokens to generate</span><input type="number" value="20" min="1" id="tokens">
-    <br><br><button id="generate">Generate</button>
+    <br><br><button id="generate" disabled>Generate</button>
     </center>
     <br><br><div class="output" id="output"></div>
-    <br><br><button id="share">Share</button>
+    <br><br><button id="share" disabled>Share</button>
     <script src="preds.js"></script>
     <script src="prompts.js"></script>
     <script>
@@ -95,6 +95,8 @@
             alert('Copied to clipboard!')
         })
         window.onload = ()=>{
+        genBtn.disabled=false
+        shareBtn.disabled=false
         genBtn.addEventListener('click',()=>{
             const temp = document.getElementById('temp').value
             prompt_val = promptBox.value.toLowerCase();
